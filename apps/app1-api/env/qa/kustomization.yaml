@@ -21,7 +21,7 @@ patches:
         value: [{ "name": "private-registry-secret" }]
   - target:
       kind: Ingress
-      name: guestbook-ingress
+      name: api-app1-ingress
     patch: |-
       - op: replace
         path: /spec/rules/0/host
