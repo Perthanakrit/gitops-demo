@@ -25,4 +25,4 @@ patches:
     patch: |-
       - op: replace
         path: /spec/rules/0/host
-        value: Host(`demo-i.local`)
+        value: demo-i.local
