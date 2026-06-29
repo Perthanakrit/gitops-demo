@@ -13,8 +13,8 @@ images:
 
 patches:
   - target:
-        kind: Deployment
-        name: api-app1-app 
+      kind: Deployment
+      name: api-app1-app 
     patch: |-
       - op: add
         path: /spec/template/spec/imagePullSecrets
