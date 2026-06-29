@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-app1-app 
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: api-app1-app
+  template:
+    metadata:
+      labels:
+        app: api-app1-app
+    spec:
+      containers:
+      - name: api-app1-app
+        image: pertra/express-docker-app-jenkins:latest
+        ports:
+        - containerPort: 80
+        envFrom:
+          - secretRef:
+              name: api-app1-secrets
+        resources:
+          requests:
+            cpu: "250m"
+            memory: "64Mi"
+          limits:
+            cpu: "500m"
+            memory: "128Mi"

@@ -1,0 +1,33 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: cluster-apps
+  namespace: argocd
+spec:
+  generators:
+    - git:
+        repoURL: 'https://github.com/Perthanakrit/p-gitops-demo.git'
+        revision: HEAD
+        directories:
+          - path: apps/*/env/*
+  template:
+    metadata:
+      # Automatically names the app (e.g., "dev-guestbook" or "prod-todo-api")
+      name: '{{path.basename}}-{{path.elements[1]}}'
+      namespace: argocd
+    spec:
+      project: app-demo
+      source:
+        repoURL: 'https://github.com/Perthanakrit/p-gitops-demo.git'
+        targetRevision: HEAD
+        path: '{{path}}' # Tracks the exact directory path found by the generator
+      destination:
+        server: 'https://kubernetes.default.svc'
+        # Dynamically deploys into "dev-apps" or "prod-apps" based on the environment name
+        namespace: '{{path.basename}}-apps'
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true
