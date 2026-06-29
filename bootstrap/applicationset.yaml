@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: cluster-apps
+  name: p-app-set
   namespace: argocd
 spec:
   generators:
@@ -12,15 +12,15 @@ spec:
           - path: apps/*/env/*
   template:
     metadata:
-      # Automatically names the app (e.g., "dev-guestbook" or "prod-todo-api")
-      name: '{{path.basename}}-{{path.elements[1]}}'
+      name: '{{path.basename}}-{{path[1]}}'
       namespace: argocd
     spec:
       project: app-demo
       source:
         repoURL: 'https://github.com/Perthanakrit/p-gitops-demo.git'
         targetRevision: HEAD
-        path: '{{path}}' # Tracks the exact directory path found by the generator
+        # Tracks the exact directory path found by the generator, The "." prepended to path (.path) required by the goTemplate engine
+        path: '{{path}}' 
       destination:
         server: 'https://kubernetes.default.svc'
         # Dynamically deploys into "dev-apps" or "prod-apps" based on the environment name
