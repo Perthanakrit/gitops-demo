@@ -13,6 +13,13 @@ images:
 
 patches:
   - target:
+        kind: Deployment
+        name: api-app1-app 
+    patch: |-
+      - op: add
+        path: /spec/template/spec/imagePullSecrets
+        value: [{ "name": "private-registry-secret" }]
+  - target:
       kind: Ingress
       name: guestbook-ingress
     patch: |-
